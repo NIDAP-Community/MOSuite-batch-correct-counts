@@ -7,7 +7,7 @@
 	},
 	"datasets": [
 		{
-			"id": "ca9bcc27-3bdf-4500-be66-a11d06d5d3fa",
+			"id": "633cdd90-eb67-49e9-95d3-418cbca464e7",
 			"name": "multiOmicDataSet"
 		}
 	],
@@ -42,26 +42,6 @@
 			"default_value": ".*\\.rds$"
 		},
 		{
-			"id": "UA4GuIpVAxdcmHAG",
-			"category": "XqgPq28Eo5VCFSZu",
-			"name": "Count type",
-			"param_name": "count_type",
-			"description": "Type of counts to batch correct. Must be a count type in names(moo@counts)",
-			"type": "text",
-			"value_type": "string",
-			"default_value": "norm"
-		},
-		{
-			"id": "vA3pMmQwKs8nZx1c",
-			"category": "XqgPq28Eo5VCFSZu",
-			"name": "Sub count type",
-			"param_name": "sub_count_type",
-			"description": "If count_type is a list, specify the sub count type (e.g. voom, rlog)",
-			"type": "text",
-			"value_type": "string",
-			"default_value": "voom"
-		},
-		{
 			"id": "vB4qNnRxLt9oAy2d",
 			"category": "gn9FXwemlVazWQIo",
 			"name": "Batch column name",
@@ -81,6 +61,26 @@
 			"type": "text",
 			"value_type": "string",
 			"default_value": "Group"
+		},
+		{
+			"id": "UA4GuIpVAxdcmHAG",
+			"category": "XqgPq28Eo5VCFSZu",
+			"name": "Count type",
+			"param_name": "count_type",
+			"description": "Type of counts to batch correct. Must be a count type in names(moo@counts)",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "norm"
+		},
+		{
+			"id": "vA3pMmQwKs8nZx1c",
+			"category": "XqgPq28Eo5VCFSZu",
+			"name": "Sub count type",
+			"param_name": "sub_count_type",
+			"description": "If count_type is a list, specify the sub count type (e.g. voom, rlog)",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "voom"
 		},
 		{
 			"id": "vE7tQqUaOw2rDx5g",
