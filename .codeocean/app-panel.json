@@ -13,12 +13,6 @@
 	],
 	"categories": [
 		{
-			"id": "gDLmTU36PrmD13RK",
-			"name": "Input Data Parameters",
-			"description": "Options for defining input data",
-			"icon": "📁"
-		},
-		{
 			"id": "gn9FXwemlVazWQIo",
 			"name": "Basic",
 			"icon": "📂"
@@ -31,16 +25,6 @@
 		}
 	],
 	"parameters": [
-		{
-			"id": "vErI4n2A3SVqtFPz",
-			"category": "gDLmTU36PrmD13RK",
-			"name": "multiOmicDataSet file pattern",
-			"param_name": "regex_moo",
-			"description": "Regular expression pattern to match a multiOmicDataset RDS file in data/",
-			"type": "text",
-			"value_type": "string",
-			"default_value": ".*\\.rds$"
-		},
 		{
 			"id": "vB4qNnRxLt9oAy2d",
 			"category": "gn9FXwemlVazWQIo",
