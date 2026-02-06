@@ -1,8 +1,9 @@
 # Code Ocean capsule - MOSuite - batch correct counts
 
-## development version
+## v3.0
 
 - Fix: remove `regex_moo` parameter from configuration. multiOmicDataSet input files are now required to follow the standardized naming pattern (`.*\.rds$`).
+- Use MOSuite v0.3.0.
 
 ## v2.0
 
