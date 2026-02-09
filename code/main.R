@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-rlang::global_entrace()
 library(argparse)
 library(glue)
 library(MOSuite)
@@ -22,8 +21,13 @@ parser$add_argument("--covariates_colnames", type="character", default="Group", 
 parser$add_argument("--batch_colname", type="character", default="Batch", help="Column name for batch information")
 parser$add_argument("--label_colname", type="character", default=NULL, help="Column name for sample labels")
 parser$add_argument("--colors_for_plots", type="character", default="", help="Comma-separated list of colors for plots")
+parser$add_argument("--print_plots", type="logical", default=TRUE, help="Whether to print plots to console")
+parser$add_argument("--save_plots", type="logical", default=TRUE, help="Whether to save plots to files")
 
 args <- parser$parse_args()
+
+# Set plot options
+options(print_plots = args$print_plots, save_plots = args$save_plots)
 
 # load multiOmicDataSet from data directory
 moo <- load_moo_from_data_dir()
@@ -39,6 +43,8 @@ moo |>
         covariates_colnames = parse_vector_with_default(args$covariates_colnames, "Group"),
         batch_colname = args$batch_colname,
         label_colname = args$label_colname,
-        colors_for_plots = parse_optional_vector(args$colors_for_plots)
+        colors_for_plots = parse_optional_vector(args$colors_for_plots),
+        print_plots = args$print_plots,
+        save_plots = args$save_plots
         ) |> 
-    write_rds(file.path(getOption("moo_plots_dir"), "..", "moo", "moo.rds"))
+    write_rds(file.path(getOption("moo_plots_dir"), "..", "moo", "moo-batch.rds"))
