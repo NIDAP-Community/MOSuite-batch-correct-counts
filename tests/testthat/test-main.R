@@ -14,13 +14,13 @@ test_that("code/run executes successfully with default CLI arguments", {
 
   # Get test data from package tests directory
   repo_root <- normalizePath(file.path(dirname(getwd()), ".."))
-  test_data_file <- file.path(repo_root, "tests", "data", "moo-batch.rds")
+  test_data_file <- file.path(repo_root, "tests", "data", "moo-norm.rds")
 
   expect_true(
     file.exists(test_data_file),
     info = paste("Test data file should exist at", test_data_file)
   )
-  file.copy(test_data_file, file.path(data_dir, "moo-batch.rds"))
+  file.copy(test_data_file, file.path(data_dir, "moo-norm.rds"))
 
   # Copy main.R and run script to workspace
   file.copy(
@@ -84,10 +84,10 @@ test_that("code/run executes with custom CLI arguments", {
 
   # Get test data from package tests directory
   repo_root <- normalizePath(file.path(dirname(getwd()), ".."))
-  test_data_file <- file.path(repo_root, "tests", "data", "moo-batch.rds")
+  test_data_file <- file.path(repo_root, "tests", "data", "moo-norm.rds")
 
   # Copy test data to workspace
-  file.copy(test_data_file, file.path(data_dir, "moo-batch.rds"))
+  file.copy(test_data_file, file.path(data_dir, "moo-norm.rds"))
 
   # Copy main.R and run script to workspace
   file.copy(
