@@ -10,7 +10,11 @@ cat("Current directory:", cwd, "\n")
 # Calculate repo root the same way the test does in tests/testthat/test-main.R
 # When running from tests/testthat, dirname(getwd()) goes to tests/
 repo_root_test_calculation <- normalizePath(file.path(dirname(cwd), ".."))
-cat("Calculated repo_root (test calculation):", repo_root_test_calculation, "\n")
+cat(
+  "Calculated repo_root (test calculation):",
+  repo_root_test_calculation,
+  "\n"
+)
 
 # From script running in tests directory:
 # When this script is in tests/ directory, repo_root should be dirname(getwd())

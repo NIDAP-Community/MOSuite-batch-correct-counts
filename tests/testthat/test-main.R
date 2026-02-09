@@ -119,7 +119,11 @@ test_that("code/run executes with custom CLI arguments", {
   )
 
   # Check for successful execution
-  expect_equal(exit_code, 0, info = "run script with custom args should execute without error")
+  expect_equal(
+    exit_code,
+    0,
+    info = "run script with custom args should execute without error"
+  )
   expect_true(
     file.exists(file.path(results_dir, "moo", "moo-batch.rds")),
     info = "Output file moo.rds should be created with custom args"
