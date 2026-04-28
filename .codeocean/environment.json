@@ -6,5 +6,17 @@
 		"registry_host_arg": true,
 		"git_ask_pass": true,
 		"mount_secrets": true
+	},
+	"installers": {
+		"apt": {
+			"packages": [
+				{
+					"name": "unzip",
+					"version": "6.0-26ubuntu3.2"
+				}
+			],
+			"install_software_properties_common": true,
+			"install_gnupg": true
+		}
 	}
 }
