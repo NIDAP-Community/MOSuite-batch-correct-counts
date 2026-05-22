@@ -5,7 +5,6 @@
 - The MOSuite package is now available in `code/MOSuite`. (#2)
 - Use MOSuite v0.3.1.
 
-
 ## v3.0
 
 - Fix: remove `regex_moo` parameter from configuration. multiOmicDataSet input files are now required to follow the standardized naming pattern (`.*\.rds$`).
