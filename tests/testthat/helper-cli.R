@@ -62,7 +62,10 @@ setup_cli_workspace <- function(prefix = "mosuite_batch_correct_counts_test_") {
 expect_outputs_created <- function(results_dir) {
   moo_path <- file.path(results_dir, "moo", "moo-batch.rds")
 
-  expect_true(file.exists(moo_path), info = "Batch-corrected MOO output should be created")
+  expect_true(
+    file.exists(moo_path),
+    info = "Batch-corrected MOO output should be created"
+  )
   expect_true(
     file.info(moo_path)$size > 0,
     info = "Batch-corrected MOO output should be non-empty"
