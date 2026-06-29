@@ -54,11 +54,12 @@
 			"description": "Type of counts to batch correct. Must be a count type in names(moo@counts)",
 			"type": "list",
 			"value_type": "string",
-			"default_value": "filt",
+			"default_value": "norm",
 			"extra_data": [
 				"raw",
 				"clean",
-				"filt"
+				"filt",
+				"norm"
 			]
 		},
 		{
