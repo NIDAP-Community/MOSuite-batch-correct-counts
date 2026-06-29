@@ -26,6 +26,22 @@
 	],
 	"parameters": [
 		{
+			"id": "UA4GuIpVAxdcmHAG",
+			"category": "gn9FXwemlVazWQIo",
+			"name": "Count type",
+			"param_name": "count_type",
+			"description": "Type of counts to batch correct. Must be a count type in names(moo@counts)",
+			"type": "list",
+			"value_type": "string",
+			"default_value": "norm",
+			"extra_data": [
+				"raw",
+				"clean",
+				"filt",
+				"norm"
+			]
+		},
+		{
 			"id": "vB4qNnRxLt9oAy2d",
 			"category": "gn9FXwemlVazWQIo",
 			"name": "Batch column name",
@@ -45,22 +61,6 @@
 			"type": "text",
 			"value_type": "string",
 			"default_value": "Group"
-		},
-		{
-			"id": "UA4GuIpVAxdcmHAG",
-			"category": "XqgPq28Eo5VCFSZu",
-			"name": "Count type",
-			"param_name": "count_type",
-			"description": "Type of counts to batch correct. Must be a count type in names(moo@counts)",
-			"type": "list",
-			"value_type": "string",
-			"default_value": "norm",
-			"extra_data": [
-				"raw",
-				"clean",
-				"filt",
-				"norm"
-			]
 		},
 		{
 			"id": "vA3pMmQwKs8nZx1c",
