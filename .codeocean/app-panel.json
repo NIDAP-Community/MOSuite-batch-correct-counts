@@ -52,9 +52,14 @@
 			"name": "Count type",
 			"param_name": "count_type",
 			"description": "Type of counts to batch correct. Must be a count type in names(moo@counts)",
-			"type": "text",
+			"type": "list",
 			"value_type": "string",
-			"default_value": "norm"
+			"default_value": "filt",
+			"extra_data": [
+				"raw",
+				"clean",
+				"filt"
+			]
 		},
 		{
 			"id": "vA3pMmQwKs8nZx1c",
