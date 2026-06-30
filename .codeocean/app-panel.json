@@ -22,6 +22,12 @@
 			"name": "Advanced",
 			"description": "Advanced parameters",
 			"icon": "📂"
+		},
+		{
+			"id": "VisGeneral",
+			"name": "Visualization: General",
+			"description": "General visualization and plotting options",
+			"icon": "\ud83d\udcca"
 		}
 	],
 	"parameters": [
@@ -94,7 +100,7 @@
 		},
 		{
 			"id": "vG9vSsWcQy4tFz7i",
-			"category": "XqgPq28Eo5VCFSZu",
+			"category": "VisGeneral",
 			"name": "Label column name",
 			"param_name": "label_colname",
 			"description": "Column from sample metadata containing labels for plots",
@@ -114,7 +120,7 @@
 		},
 		{
 			"id": "vJ2yVvZfTb7wIc0l",
-			"category": "XqgPq28Eo5VCFSZu",
+			"category": "VisGeneral",
 			"name": "Colors for plots",
 			"param_name": "colors_for_plots",
 			"description": "Comma-separated list of colors for PCA and histogram",
