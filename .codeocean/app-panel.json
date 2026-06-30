@@ -18,16 +18,16 @@
 			"icon": "📂"
 		},
 		{
-			"id": "XqgPq28Eo5VCFSZu",
-			"name": "Advanced",
-			"description": "Advanced parameters",
-			"icon": "📂"
-		},
-		{
 			"id": "VisGeneral",
 			"name": "Visualization: General",
 			"description": "General visualization and plotting options",
 			"icon": "\ud83d\udcca"
+		},
+		{
+			"id": "XqgPq28Eo5VCFSZu",
+			"name": "Advanced",
+			"description": "Advanced parameters",
+			"icon": "📂"
 		}
 	],
 	"parameters": [
