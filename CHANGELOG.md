@@ -2,7 +2,7 @@
 
 ## Development version
 
-- Improved the Code Ocean parameter UI for the batch correct counts capsule (#3).
+- Improved the Code Ocean parameter UI for the batch correct counts capsule (#3, @phoman14).
 
 ## v4.0
 
