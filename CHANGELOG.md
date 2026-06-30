@@ -1,5 +1,9 @@
 # Code Ocean capsule - MOSuite - batch correct counts
 
+## Development version
+
+- Improved the Code Ocean parameter UI for the batch correct counts capsule (#3).
+
 ## v4.0
 
 - The MOSuite package is now available in `code/MOSuite`. (#2)
