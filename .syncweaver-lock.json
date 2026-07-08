@@ -1,0 +1,12 @@
+{
+  "host": "NIDAP-Community/MOSuite-batch-correct-counts",
+  "orchestrator": "NIDAP-Community/syncweaver-orchestrator",
+  "syncweaver_version": "0.0.1-dev",
+  "sources": {
+    "code/MOSuite": {
+      "repo_url": "https://github.com/CCBR/MOSuite",
+      "ref": "FigOutSync",
+      "git_sha": "ee8f9259be4cf5c5567e365d31ae452873de46df"
+    }
+  }
+}
