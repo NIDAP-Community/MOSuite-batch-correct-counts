@@ -58,7 +58,11 @@ test_that("main.R accepts updated batch correction plotting arguments", {
       "--interactive_plots=FALSE"
     )
   )
-  expect_equal(exit_code, 0, info = "main.R should accept updated plotting arguments")
+  expect_equal(
+    exit_code,
+    0,
+    info = "main.R should accept updated plotting arguments"
+  )
 
   expect_outputs_created(setup$results_dir)
 })
