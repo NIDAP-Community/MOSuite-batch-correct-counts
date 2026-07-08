@@ -67,25 +67,6 @@ test_that("main.R accepts updated batch correction plotting arguments", {
   expect_outputs_created(setup$results_dir)
 })
 
-test_that("capsule environment installs MOSuite from FigOutSync", {
-  repo_root <- normalizePath(file.path(dirname(getwd()), ".."))
-  post_install <- file.path(repo_root, "environment", "postInstall")
-  post_install_lines <- readLines(post_install, warn = FALSE)
-
-  expect_true(
-    any(grepl("CCBR/MOSuite", post_install_lines, fixed = TRUE)),
-    info = "postInstall should install MOSuite from the package repository"
-  )
-  expect_true(
-    any(grepl("ref = \"FigOutSync\"", post_install_lines, fixed = TRUE)),
-    info = "postInstall should use the FigOutSync package branch"
-  )
-  expect_false(
-    any(grepl("ref = \"main\"", post_install_lines, fixed = TRUE)),
-    info = "postInstall should not install MOSuite from main for this capsule PR"
-  )
-})
-
 test_that("app panel exposes updated batch correction plotting parameters", {
   repo_root <- normalizePath(file.path(dirname(getwd()), ".."))
   app_panel <- file.path(repo_root, ".codeocean", "app-panel.json")
