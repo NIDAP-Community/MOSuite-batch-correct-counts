@@ -1,14 +1,2 @@
 #!/usr/bin/env bash
 set -e
-
-Rscript - <<'RSCRIPT'
-if (!requireNamespace("remotes", quietly = TRUE)) {
-	install.packages("remotes", repos = "https://cloud.r-project.org")
-}
-
-remotes::install_github(
-	"CCBR/MOSuite",
-	ref = "FigOutSync",
-	upgrade = "never"
-)
-RSCRIPT

@@ -2,7 +2,6 @@
 
 ## Development version
 
-- Install MOSuite from the `FigOutSync` package branch during capsule setup so the capsule uses the updated batch correction figure-standardization behavior before the next release image is available (#4, @phoman14).
 - Align batch correction PCA and histogram defaults with the MOSuite package defaults (#4, @phoman14).
 - Improved the Code Ocean parameter UI for the batch correct counts capsule (#3, @phoman14).
 
