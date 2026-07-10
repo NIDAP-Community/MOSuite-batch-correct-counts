@@ -19,7 +19,6 @@ jobs:
     steps:
       - name: Generate a token
         id: generate-token
-        if: ${{ inputs.github-token == '' }}
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ vars.CCBR_BOT_APP_ID }}
@@ -34,6 +33,7 @@ jobs:
 
       - name: add to CCBR MOSuite project
         uses: actions/add-to-project@v1.0.2
+        if: github.event_name == 'issues'
         with:
           project-url: https://github.com/orgs/CCBR/projects/32
           github-token: ${{ steps.generate-token.outputs.token }}
