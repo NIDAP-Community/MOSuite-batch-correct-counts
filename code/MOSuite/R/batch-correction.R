@@ -1,0 +1,291 @@
+#' Perform batch correction
+#'
+#' Perform batch correction using sva::ComBat()
+#'
+#' @inheritParams filter_counts
+#' @inheritParams option_params
+#'
+#' @param sub_count_type if `count_type` is a list, specify the sub count type within the list. (Default: `"voom"`)
+#' @param covariates_colnames The column name(s) from the sample metadata
+#'   containing variable(s) of interest, such as phenotype.
+#'   Most commonly this will be the same column selected for your Groups Column.
+#'   Some experimental designs may require that you add additional covariate columns here.
+#'   Do not include the `batch_colname` here.
+#' @param batch_colname The column from the sample metadata containing the batch information.
+#'   Samples extracted, prepared, or sequenced at separate times or using separate materials/staff/equipment
+#'   may belong to different batches.
+#'   Not all data sets have batches, in which case you do not need batch correction.
+#'   If your data set has no batches, you can provide a batch column with the same
+#'   value in every row to skip batch correction (alternatively, simply do not run this function).
+#'
+#' @return `multiOmicDataSet` with batch-corrected counts
+#' @export
+#'
+#' @examples
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   anno_dat = data.frame(),
+#'   counts_lst = list(
+#'     "raw" = as.data.frame(nidap_raw_counts),
+#'     "clean" = as.data.frame(nidap_clean_raw_counts),
+#'     "filt" = as.data.frame(nidap_filtered_counts),
+#'     "norm" = list(
+#'       "voom" = as.data.frame(nidap_norm_counts)
+#'     )
+#'   )
+#' ) |>
+#'   batch_correct_counts(
+#'     count_type = "norm",
+#'     sub_count_type = "voom",
+#'     covariates_colnames = "Group",
+#'     batch_colname = "Batch",
+#'     label_colname = "Label"
+#'   )
+#'
+#' head(moo@counts[["batch"]])
+#'
+#' @family moo methods
+batch_correct_counts <- function(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom",
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  samples_to_include = NULL,
+  covariates_colnames = "Group",
+  batch_colname = "Batch",
+  label_colname = NULL,
+  samples_to_rename = c(""),
+  add_label_to_pca = TRUE,
+  principal_component_on_x_axis = 1,
+  principal_component_on_y_axis = 2,
+  legend_position_for_pca = "top",
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  label_font_size = 3,
+  point_size_for_pca = 3,
+  color_histogram_by_group = TRUE,
+  set_min_max_for_x_axis_for_histogram = FALSE,
+  minimum_for_x_axis_for_histogram = -1,
+  maximum_for_x_axis_for_histogram = 1,
+  legend_font_size_for_histogram = NULL,
+  legend_position_for_histogram = "top",
+  number_of_histogram_legend_columns = 6,
+  plot_corr_matrix_heatmap = TRUE,
+  colors_for_plots = c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ),
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  interactive_plots = FALSE,
+  plots_subdir = "batch"
+) {
+  abort_packages_not_installed("sva")
+  # select correct counts matrix
+  if (!(count_type %in% names(moo@counts))) {
+    stop(glue::glue("count_type {count_type} not in moo@counts"))
+  }
+  counts_dat <- moo@counts[[count_type]]
+  if (!is.null(sub_count_type)) {
+    if (!(inherits(counts_dat, "list"))) {
+      stop(
+        glue::glue(
+          "{count_type} counts is not a named list. To use {count_type} counts, set sub_count_type to NULL"
+        )
+      )
+    } else if (!(sub_count_type %in% names(counts_dat))) {
+      stop(
+        glue::glue(
+          "sub_count_type {sub_count_type} is not in moo@counts[[{count_type}]]"
+        )
+      )
+    }
+    counts_dat <- moo@counts[[count_type]][[sub_count_type]]
+  }
+  # sva::ComBat() can't handle tibbles
+  counts_dat <- counts_dat |> as.data.frame()
+  sample_metadata <- moo@sample_meta |> as.data.frame()
+  batch_vctr <- sample_metadata |> dplyr::pull(batch_colname)
+  message(
+    glue::glue(
+      "* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"
+    )
+  )
+
+  covariates_colnames <- covariates_colnames |> unlist()
+
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
+  }
+  if (is.null(samples_to_include)) {
+    samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
+  }
+  if (is.null(label_colname)) {
+    label_colname <- sample_id_colname
+  }
+
+  if (batch_colname %in% covariates_colnames) {
+    stop(glue::glue(
+      "Batch column '{batch_colname}' cannot be included in covariates."
+    ))
+  }
+  if (length(unique(batch_vctr)) <= 1) {
+    combat_edata <- counts_dat
+    warning(
+      glue::glue(
+        "Batch column '{batch_colname}' contains only 1 unique value; skipping batch correction"
+      )
+    )
+  } else {
+    counts_matr <- counts_dat |>
+      counts_dat_to_matrix(feature_id_colname = feature_id_colname)
+    # coerce covariate columns to factors
+    sample_metadata <- sample_metadata |>
+      dplyr::mutate(dplyr::across(
+        tidyselect::all_of(covariates_colnames),
+        ~ as.factor(.x)
+      ))
+    # run batch correction
+    combat_edata <- sva::ComBat(
+      counts_matr,
+      batch = batch_vctr,
+      mod = stats::model.matrix(
+        stats::as.formula(paste(
+          "~",
+          paste(covariates_colnames, sep = "+", collapse = "+")
+        )),
+        data = sample_metadata
+      ),
+      par.prior = TRUE,
+      prior.plots = FALSE
+    ) |>
+      as.data.frame() |>
+      tibble::rownames_to_column(feature_id_colname)
+  }
+
+  if (isTRUE(print_plots) || isTRUE(save_plots)) {
+    if (is.null(colors_for_plots)) {
+      colors_for_plots <- moo@analyses[["colors"]][[batch_colname]]
+    }
+    if (isTRUE(color_histogram_by_group)) {
+      colors_for_histogram <- colors_for_plots
+    } else {
+      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+    }
+    pca_plot <- plot_pca(
+      combat_edata,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = batch_colname,
+      label_colname = label_colname,
+      samples_to_rename = samples_to_rename,
+      color_values = colors_for_plots,
+      principal_components = c(
+        principal_component_on_x_axis,
+        principal_component_on_y_axis
+      ),
+      legend_position = legend_position_for_pca,
+      point_size = point_size_for_pca,
+      add_label = add_label_to_pca,
+      label_font_size = label_font_size,
+      label_offset_y_ = label_offset_y_,
+      label_offset_x_ = label_offset_x_,
+      print_plots = FALSE,
+      save_plots = FALSE
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
+
+    hist_plot <- plot_histogram(
+      combat_edata,
+      sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = batch_colname,
+      label_colname = label_colname,
+      color_values = colors_for_histogram,
+      color_by_group = color_histogram_by_group,
+      set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
+      minimum_for_x_axis = minimum_for_x_axis_for_histogram,
+      maximum_for_x_axis = maximum_for_x_axis_for_histogram,
+      legend_position = legend_position_for_histogram,
+      legend_font_size = legend_font_size_for_histogram,
+      number_of_legend_columns = number_of_histogram_legend_columns
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
+    if (isTRUE(plot_corr_matrix_heatmap)) {
+      corHM_plot <- plot_corr_heatmap(
+        combat_edata,
+        sample_metadata = sample_metadata,
+        sample_id_colname = sample_id_colname,
+        feature_id_colname = feature_id_colname,
+        group_colname = batch_colname,
+        label_colname = label_colname,
+        color_values = colors_for_plots
+      )
+      print_or_save_plot(
+        corHM_plot,
+        filename = file.path(plots_subdir, "corr_heatmap.png"),
+        print_plots = print_plots,
+        save_plots = save_plots,
+        caption = "batch-corrected counts"
+      )
+    }
+
+    plot_ext <- "png"
+    if (isTRUE(interactive_plots)) {
+      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = c("sample", "group"))
+      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
+        plotly::ggplotly(tooltip = c("sample"))
+      plot_ext <- "html"
+    }
+    if (identical(plot_ext, "png")) {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots,
+        width = 7,
+        height = 7,
+        units = "in"
+      )
+    } else {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots
+      )
+    }
+    print_or_save_plot(
+      hist_plot,
+      filename = file.path(plots_subdir, glue::glue("histogram.{plot_ext}")),
+      print_plots = print_plots,
+      save_plots = save_plots
+    )
+  }
+
+  message(glue::glue(
+    "The total number of features in output: {nrow(combat_edata)}"
+  ))
+  message(glue::glue(
+    "Number of samples after batch correction: {ncol(combat_edata)}"
+  ))
+
+  moo@counts[["batch"]] <- combat_edata
+  return(moo)
+}

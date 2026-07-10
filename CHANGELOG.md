@@ -1,5 +1,15 @@
 # Code Ocean capsule - MOSuite - batch correct counts
 
+## Development version
+
+- Align batch correction PCA and histogram defaults with the MOSuite package defaults (#4, @phoman14).
+- Improved the Code Ocean parameter UI for the batch correct counts capsule (#3, @phoman14).
+
+## v4.0
+
+- The MOSuite package is now available in `code/MOSuite`. (#2)
+- Use MOSuite v0.3.1.
+
 ## v3.0
 
 - Fix: remove `regex_moo` parameter from configuration. multiOmicDataSet input files are now required to follow the standardized naming pattern (`.*\.rds$`).
