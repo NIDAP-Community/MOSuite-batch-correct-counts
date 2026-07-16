@@ -198,54 +198,41 @@ options(print_plots = args$print_plots, save_plots = args$save_plots)
 moo <- load_moo_from_data_dir()
 
 # run MOSuite
-batch_args <- list(
-  moo = moo,
-  count_type = args$count_type,
-  sub_count_type = args$sub_count_type,
-  sample_id_colname = args$sample_id_colname,
-  feature_id_colname = args$feature_id_colname,
-  samples_to_include = parse_optional_vector(args$samples_to_include),
-  covariates_colnames = parse_vector_with_default(
-    args$covariates_colnames,
-    "Group"
-  ),
-  batch_colname = args$batch_colname,
-  label_colname = args$label_colname,
-  samples_to_rename = parse_samples_to_rename(args$samples_to_rename),
-  add_label_to_pca = args$add_label_to_pca,
-  principal_component_on_x_axis = args$principal_component_on_x_axis,
-  principal_component_on_y_axis = args$principal_component_on_y_axis,
-  legend_position_for_pca = args$legend_position_for_pca,
-  label_offset_x_ = args$label_offset_x_,
-  label_offset_y_ = args$label_offset_y_,
-  label_font_size = args$label_font_size,
-  point_size_for_pca = args$point_size_for_pca,
-  color_histogram_by_group = args$color_histogram_by_group,
-  set_min_max_for_x_axis_for_histogram = args$set_min_max_for_x_axis_for_histogram,
-  minimum_for_x_axis_for_histogram = args$minimum_for_x_axis_for_histogram,
-  maximum_for_x_axis_for_histogram = args$maximum_for_x_axis_for_histogram,
-  legend_font_size_for_histogram = parse_optional_number(
-    args$legend_font_size_for_histogram
-  ),
-  legend_position_for_histogram = args$legend_position_for_histogram,
-  number_of_histogram_legend_columns = args$number_of_histogram_legend_columns,
-  plot_corr_matrix_heatmap = args$plot_corr_matrix_heatmap,
-  colors_for_plots = parse_optional_vector(args$colors_for_plots),
-  print_plots = args$print_plots,
-  save_plots = args$save_plots,
-  interactive_plots = args$interactive_plots
-)
-
-supported_args <- c("moo", names(formals(batch_correct_counts)))
-unsupported_args <- setdiff(names(batch_args), supported_args)
-if (length(unsupported_args) > 0) {
-  message(glue::glue(
-    "Installed MOSuite does not support these batch_correct_counts arguments: {glue::glue_collapse(unsupported_args, sep = ', ')}"
-  ))
-}
-
-do.call(
-  batch_correct_counts,
-  batch_args[names(batch_args) %in% supported_args]
-) |>
+moo |>
+  batch_correct_counts(
+    count_type = args$count_type,
+    sub_count_type = args$sub_count_type,
+    sample_id_colname = args$sample_id_colname,
+    feature_id_colname = args$feature_id_colname,
+    samples_to_include = parse_optional_vector(args$samples_to_include),
+    covariates_colnames = parse_vector_with_default(
+      args$covariates_colnames,
+      "Group"
+    ),
+    batch_colname = args$batch_colname,
+    label_colname = args$label_colname,
+    samples_to_rename = parse_samples_to_rename(args$samples_to_rename),
+    add_label_to_pca = args$add_label_to_pca,
+    principal_component_on_x_axis = args$principal_component_on_x_axis,
+    principal_component_on_y_axis = args$principal_component_on_y_axis,
+    legend_position_for_pca = args$legend_position_for_pca,
+    label_offset_x_ = args$label_offset_x_,
+    label_offset_y_ = args$label_offset_y_,
+    label_font_size = args$label_font_size,
+    point_size_for_pca = args$point_size_for_pca,
+    color_histogram_by_group = args$color_histogram_by_group,
+    set_min_max_for_x_axis_for_histogram = args$set_min_max_for_x_axis_for_histogram,
+    minimum_for_x_axis_for_histogram = args$minimum_for_x_axis_for_histogram,
+    maximum_for_x_axis_for_histogram = args$maximum_for_x_axis_for_histogram,
+    legend_font_size_for_histogram = parse_optional_number(
+      args$legend_font_size_for_histogram
+    ),
+    legend_position_for_histogram = args$legend_position_for_histogram,
+    number_of_histogram_legend_columns = args$number_of_histogram_legend_columns,
+    plot_corr_matrix_heatmap = args$plot_corr_matrix_heatmap,
+    colors_for_plots = parse_optional_vector(args$colors_for_plots),
+    print_plots = args$print_plots,
+    save_plots = args$save_plots,
+    interactive_plots = args$interactive_plots
+  ) |>
   write_rds(file.path(getOption("moo_plots_dir"), "..", "moo", "moo-batch.rds"))
