@@ -45,7 +45,6 @@ test_that("main.R accepts updated batch correction plotting arguments", {
     args = c(
       "main.R",
       common_cli_args,
-      "--add_label_to_pca=FALSE",
       "--principal_component_on_x_axis=1",
       "--principal_component_on_y_axis=2",
       "--legend_position_for_pca=bottom",
@@ -74,11 +73,11 @@ test_that("app panel exposes updated batch correction plotting parameters", {
 
   expected_parameters <- c(
     "samples_to_rename",
-    "add_label_to_pca",
     "principal_component_on_x_axis",
     "principal_component_on_y_axis",
     "legend_position_for_pca",
     "point_size_for_pca",
+    "add_label_to_pca",
     "color_histogram_by_group",
     "legend_font_size_for_histogram",
     "legend_position_for_histogram",

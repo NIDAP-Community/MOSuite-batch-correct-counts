@@ -59,20 +59,14 @@ parser$add_argument(
 parser$add_argument(
   "--label_colname",
   type = "character",
-  default = NULL,
-  help = "Column name for sample labels"
+  default = "Label",
+  help = 'Column name from sample metadata table for sample labels used in heatmap and PCA figures. Use "Add labels to PCA" parameter in "Visualization: PCA" section to control if labels are added to PCA Plot.'
 )
 parser$add_argument(
   "--samples_to_rename",
   type = "character",
   default = "",
   help = "Sample renaming pairs: old:new,old2:new2"
-)
-parser$add_argument(
-  "--add_label_to_pca",
-  type = "logical",
-  default = TRUE,
-  help = "Label points on the PCA plot"
 )
 parser$add_argument(
   "--principal_component_on_x_axis",
@@ -115,6 +109,12 @@ parser$add_argument(
   type = "double",
   default = 3,
   help = "Point size for PCA plot"
+)
+parser$add_argument(
+  "--add_label_to_pca",
+  type = "logical",
+  default = TRUE,
+  help = 'Display labels from the sample metadata column selected in the "Label column name" parameter on PCA points.'
 )
 parser$add_argument(
   "--color_histogram_by_group",
@@ -212,7 +212,6 @@ moo |>
     batch_colname = args$batch_colname,
     label_colname = args$label_colname,
     samples_to_rename = parse_samples_to_rename(args$samples_to_rename),
-    add_label_to_pca = args$add_label_to_pca,
     principal_component_on_x_axis = args$principal_component_on_x_axis,
     principal_component_on_y_axis = args$principal_component_on_y_axis,
     legend_position_for_pca = args$legend_position_for_pca,
@@ -220,6 +219,7 @@ moo |>
     label_offset_y_ = args$label_offset_y_,
     label_font_size = args$label_font_size,
     point_size_for_pca = args$point_size_for_pca,
+    add_label_to_pca = args$add_label_to_pca,
     color_histogram_by_group = args$color_histogram_by_group,
     set_min_max_for_x_axis_for_histogram = args$set_min_max_for_x_axis_for_histogram,
     minimum_for_x_axis_for_histogram = args$minimum_for_x_axis_for_histogram,
