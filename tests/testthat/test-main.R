@@ -66,6 +66,46 @@ test_that("main.R accepts updated batch correction plotting arguments", {
   expect_outputs_created(setup$results_dir)
 })
 
+test_that("run wrapper accepts updated batch correction plotting arguments", {
+  setup <- setup_cli_workspace("mosuite_batch_correct_counts_run_plot_args_test_")
+  on.exit(unlink(setup$workspace, recursive = TRUE), add = TRUE)
+
+  file.copy(
+    file.path(setup$repo_root, "code", "run"),
+    file.path(setup$code_dir, "run"),
+    overwrite = TRUE
+  )
+
+  old_wd <- getwd()
+  setwd(setup$code_dir)
+  on.exit(setwd(old_wd), add = TRUE)
+
+  exit_code <- system2(
+    "bash",
+    args = c(
+      "run",
+      common_cli_args,
+      "--principal_component_on_x_axis=1",
+      "--principal_component_on_y_axis=2",
+      "--legend_position_for_pca=bottom",
+      "--point_size_for_pca=3",
+      "--color_histogram_by_group=TRUE",
+      "--legend_font_size_for_histogram=",
+      "--legend_position_for_histogram=top",
+      "--number_of_histogram_legend_columns=6",
+      "--plot_corr_matrix_heatmap=FALSE",
+      "--interactive_plots=FALSE"
+    )
+  )
+  expect_equal(
+    exit_code,
+    0,
+    info = "run script should accept updated plotting arguments"
+  )
+
+  expect_outputs_created(setup$results_dir)
+})
+
 test_that("app panel exposes updated batch correction plotting parameters", {
   repo_root <- normalizePath(file.path(dirname(getwd()), ".."))
   app_panel <- file.path(repo_root, ".codeocean", "app-panel.json")
