@@ -2,6 +2,7 @@
 
 ## Development version
 
+- Sync Code Ocean app panel parameter descriptions with MOSuite package documentation for MOSuite v0.4.1 (#10, @phoman14).
 - Align batch correction PCA and histogram defaults with the MOSuite package defaults (#4, @phoman14).
 - Improved the Code Ocean parameter UI for the batch correct counts capsule (#3, @phoman14).
 
