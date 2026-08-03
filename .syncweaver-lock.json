@@ -5,8 +5,8 @@
   "sources": {
     "code/MOSuite": {
       "repo_url": "https://github.com/CCBR/MOSuite",
-      "ref": "FigOutSync",
-      "git_sha": "ee8f9259be4cf5c5567e365d31ae452873de46df"
+      "ref": "v0.4.1",
+      "git_sha": "4e85d49ab155618d9f6beafd327b6fb87dfa8609"
     }
   }
 }
