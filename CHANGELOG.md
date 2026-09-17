@@ -2,6 +2,8 @@
 
 ## Development version
 
+## v6.0
+
 - Use MOSuite v0.5.0. (#12, @kelly-sovacool)
 
 ## v5.0
